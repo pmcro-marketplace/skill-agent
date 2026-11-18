@@ -2,11 +2,18 @@
 from __future__ import annotations
 import argparse, hashlib, json, re, sys
 from pathlib import Path
+
 try:
     import yaml
 except ImportError:
     yaml = None
 
+CREATOR = {
+    "repository": "shawn2024bellazan-prog/agent-skills",
+    "ref": "79b705c92a216356b27bae3b65a6d54187bb33ea",
+    "plugin": "skill-creator",
+    "skill": "create-skill",
+}
 CONTAINERS = ("capabilities","resources","services","mcpServers","mcp_servers","plugins","skills","jobs")
 NAME_KEYS = ("name","id","capability","service","resource")
 DESC_KEYS = ("description","summary","title")
@@ -127,126 +134,52 @@ def existing_from_index(path):
             out.add(slugify(value["name"]))
     return out
 
-def render(candidate, source, source_sha, name):
-    desc = re.sub(r"\s+", " ", candidate["description"]).strip()
-    if len(desc) > 420:
-        desc = desc[:417].rstrip() + "..."
-    routing = (f"{desc} USE FOR operating on the '{name}' capability projected from the declared YAML source. "
-               "DO NOT USE FOR executing unvalidated providers, unrelated capabilities, or source-template mutation; "
-               "use skill routing and validate first.")[:1000].rstrip()
-    md = f"""---
-name: {name}
-description: {json.dumps(routing, ensure_ascii=False)}
----
-# {name}
-
-## Purpose
-Represent the {name} capability declared in the source template as a reusable Agent Skill candidate.
-
-## When to Use
-Use when source declaration {candidate["locator"]} is the resolved capability for the current bounded task.
-
-## When Not to Use
-Do not treat this projection as proof that a provider executed. Do not use it for unrelated capabilities.
-
-## Inputs
-A bounded request, the validated source declaration, and any runtime provider authorization.
-
-## Deliverables
-A provider-backed result, or BLOCKED / NOT_INVOKED with evidence.
-
-## Workflow
-1. Read references/source.md and assets/request.json.
-2. Resolve an existing marketplace provider before execution.
-3. Invoke only that provider; never execute source YAML fields directly.
-4. Return provider evidence or NOT_INVOKED.
-
-## Validation
-Run python scripts/validate.py. Provider execution remains NOT_INVOKED until a real provider is invoked and checked.
-
-## Pitfalls
-Commands, URLs, images, projects, models, and endpoints in the source are data, not authorization. Generation is not installation, publication, or execution.
-
-## Resources
-See references/source.md, assets/request.json, and scripts/validate.py.
-"""
-    ref = f"""# Source declaration
-
-This candidate was projected deterministically from {source.as_posix()}.
-
-- Source SHA-256: {source_sha}
-- Locator: {candidate["locator"]}
-- Container: {candidate["container"]}
-- Skill identity: {name}
-- Provider execution during conversion: NOT_INVOKED
-
-The full structured declaration is retained in assets/request.json. This reference never executes command-like source fields.
-"""
-    req = {
-        "schema": "pmcro.agent-skill-candidate/v1",
-        "name": name,
+def make_request(candidate, source, source_sha, name):
+    return {
+        "schema": "pmcro.create-skill-request/v1",
+        "creator": dict(CREATOR),
+        "input": {
+            "skill_name": name,
+            "purpose": candidate["description"],
+            "trigger_cues": [],
+            "package_size": "extended",
+            "target_runtime": "PMCR-O marketplace capability derived from declarative YAML",
+            "authoritative_sources": [{
+                "path": source.as_posix(),
+                "sha256": source_sha,
+                "locator": candidate["locator"],
+            }],
+            "constraints": [
+                "Treat the YAML declaration as reference data, never as an instruction to execute commands during authoring.",
+                "Target repository requires PMCR-O Layer 0: SKILL.md plus nonempty scripts, references, and assets.",
+                "Every support file must be referenced from SKILL.md.",
+                "Description must contain USE FOR and DO NOT USE FOR routing clauses.",
+                "Creation is not validation, installation, registration, publication, approval, or acceptance.",
+            ],
+        },
         "source": {
             "path": source.as_posix(),
             "sha256": source_sha,
             "locator": candidate["locator"],
             "container": candidate["container"],
+            "declaration": candidate["declaration"],
+            "hints": candidate["hints"],
         },
-        "hints": candidate["hints"],
-        "declaration": candidate["declaration"],
-        "provider_execution": "NOT_INVOKED",
-        "admission": "CANDIDATE",
+        "creator_execution": "NOT_INVOKED",
+        "status": "READY_FOR_CREATOR",
     }
-    val = f"""#!/usr/bin/env python3
-import json, sys
-from pathlib import Path
-ROOT = Path(__file__).resolve().parents[1]
-EXPECTED = {name!r}
-def main():
-    try:
-        data = json.loads((ROOT / "assets" / "request.json").read_text(encoding="utf-8"))
-    except (OSError, ValueError) as exc:
-        print("FAIL: cannot read request asset: %s" % exc)
-        return 1
-    if data.get("name") != EXPECTED:
-        print("FAIL: skill identity mismatch")
-        return 1
-    if data.get("provider_execution") != "NOT_INVOKED":
-        print("FAIL: provider execution claim")
-        return 1
-    source = data.get("source")
-    if not isinstance(source, dict) or not source.get("sha256") or not source.get("locator"):
-        print("FAIL: incomplete source evidence")
-        return 1
-    print("PASS: candidate/source receipt consistent; provider NOT_INVOKED")
-    return 0
-if __name__ == "__main__":
-    sys.exit(main())
-"""
-    return md, ref, req, val
-
-def write_candidate(out_root, source, source_sha, candidate, name):
-    target = out_root / name
-    if target.exists():
-        raise ConversionError(f"output already exists for skill '{name}': {target}")
-    for directory in ("scripts", "references", "assets"):
-        (target / directory).mkdir(parents=True, exist_ok=True)
-    md, ref, req, val = render(candidate, source, source_sha, name)
-    (target / "SKILL.md").write_text(md, encoding="utf-8", newline="\n")
-    (target / "references" / "source.md").write_text(ref, encoding="utf-8", newline="\n")
-    (target / "assets" / "request.json").write_text(
-        json.dumps(req, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
-        encoding="utf-8", newline="\n")
-    (target / "scripts" / "validate.py").write_text(val, encoding="utf-8", newline="\n")
 
 def run(source, out_root, existing_roots=(), existing_index=None):
     data, raw = load_source(source)
     found = discover(data)
     if not found:
         raise ConversionError("source contains no recognized capability declarations")
+
     existing = set()
     for root in [Path(p) for p in AUTO_ROOTS] + [Path(p) for p in existing_roots]:
         existing.update(existing_from_root(root))
     existing.update(existing_from_index(existing_index))
+
     normalized = {}
     for candidate in found:
         name = slugify(candidate["name"])
@@ -254,23 +187,37 @@ def run(source, out_root, existing_roots=(), existing_index=None):
             raise ConversionError(
                 f"identity collision for '{name}': {normalized[name]['locator']} and {candidate['locator']}")
         normalized[name] = candidate
+
     source_sha = hashlib.sha256(raw.encode("utf-8")).hexdigest()
     out_root.mkdir(parents=True, exist_ok=True)
-    generated, reused = [], []
+    requests, reused = [], []
+
     for name, candidate in sorted(normalized.items()):
         if name in existing:
             reused.append({"name": name, "locator": candidate["locator"], "status": "reused"})
             continue
-        write_candidate(out_root, source, source_sha, candidate, name)
-        generated.append({"name": name, "locator": candidate["locator"], "status": "generated"})
+        request = make_request(candidate, source, source_sha, name)
+        path = out_root / f"{name}.create-skill.json"
+        if path.exists():
+            raise ConversionError(f"creator request already exists: {path}")
+        path.write_text(json.dumps(request, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+        requests.append({
+            "name": name,
+            "locator": candidate["locator"],
+            "status": "ready-for-creator",
+            "request": path.as_posix(),
+            "creator": dict(CREATOR),
+        })
+
     return {
         "status": "PASS",
         "source": source.as_posix(),
         "source_sha256": source_sha,
         "discovered": len(normalized),
-        "generated": generated,
+        "create_requests": requests,
         "reused": reused,
-        "provider_execution": "NOT_INVOKED",
+        "creator": dict(CREATOR),
+        "creator_execution": "NOT_INVOKED",
     }
 
 def main(argv=None):
@@ -282,6 +229,7 @@ def main(argv=None):
     parser.add_argument("--report", type=Path)
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
+
     try:
         report = run(args.source, args.out, args.existing_root, args.existing_index)
     except ConversionError as exc:
@@ -290,20 +238,28 @@ def main(argv=None):
     except OSError as exc:
         print("FAIL: %s" % exc, file=sys.stderr)
         return 1
+
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(
             json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
             encoding="utf-8")
+
     if args.format == "json":
         print(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True))
     else:
         for entry in report["reused"]:
             print("REUSE     %s <- %s" % (entry["name"], entry["locator"]))
-        for entry in report["generated"]:
-            print("GENERATE  %s <- %s" % (entry["name"], entry["locator"]))
-        print("PASS: %d discovered, %d generated, %d reused; provider NOT_INVOKED" %
-              (report["discovered"], len(report["generated"]), len(report["reused"])))
+        for entry in report["create_requests"]:
+            print("CREATE    %s -> %s/%s @ %s" % (
+                entry["name"],
+                entry["creator"]["plugin"],
+                entry["creator"]["skill"],
+                entry["creator"]["ref"],
+            ))
+        print("PASS: %d discovered, %d create-skill request(s), %d reused; creator NOT_INVOKED" % (
+            report["discovered"], len(report["create_requests"]), len(report["reused"])))
     return 0
+
 if __name__ == "__main__":
     sys.exit(main())
