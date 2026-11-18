@@ -1,0 +1,2 @@
+{"ts": "2026-11-18T06:20:15.615959+00:00", "run": "https://github.com/pmcro-marketplace/skill-agent/actions/runs/44250447497", "head_sha": "287152f", "result": "success", "jobs": ["verify (3.10)", "verify (3.13)"]}
+{"ts": "2026-11-18T06:20:15.615959+00:00", "run": "earlier run on 7cadfa5", "result": "failure", "cause": "actions/setup-python could not provision Python 3.9 on Ubuntu 26.04 (runner infrastructure); verify (3.13) passed all steps on that commit", "action": "floor raised to 3.10 in 287152f; failure kept as historical evidence"}

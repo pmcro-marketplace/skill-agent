@@ -1,0 +1,3 @@
+{"ts": "2026-11-18T06:17:58.345040+00:00", "decision": "Upgrade lives in skill plugin (owner of skill domain); other repos only read", "evidence": "every org repo's scripts/validate.py checked file existence only; 26 skills share boilerplate bodies"}
+{"ts": "2026-11-18T06:17:58.345051+00:00", "decision": "Keep .codex-plugin/plugin.json as generated compat projection, not delete", "evidence": "Codex docs: root plugin.json canonical, .codex-plugin is fallback when no extensions.com.openai"}
+{"ts": "2026-11-18T06:17:58.345053+00:00", "decision": "Do not add Claude/Cursor/VS Code manifests", "evidence": "study marks Cursor/VS Code unverified; no documented path read this session"}

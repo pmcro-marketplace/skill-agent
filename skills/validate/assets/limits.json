@@ -1,0 +1,27 @@
+{
+  "plugin_schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "mcp_schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "plugin_name_max": 64,
+  "skill_name_max": 64,
+  "description_max": 1024,
+  "compatibility_max": 500,
+  "body_lines_warn": 500,
+  "body_tokens_warn": 2500,
+  "body_tokens_warn_strong": 5000,
+  "asset_max_bytes": 5242880,
+  "menu_budget_chars": 15000,
+  "stub_min_nonspace_chars": 40,
+  "stub_markers": [
+    "TODO",
+    "TBD",
+    "FIXME"
+  ],
+  "required_artifact_dirs": [
+    "scripts",
+    "references",
+    "assets"
+  ],
+  "stub_phrases": [
+    "lorem ipsum"
+  ]
+}

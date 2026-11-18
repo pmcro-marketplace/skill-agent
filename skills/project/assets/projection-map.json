@@ -1,0 +1,11 @@
+{
+  "canonical": "plugin.json",
+  "targets": {
+    "codex": {
+      "output": ".codex-plugin/plugin.json",
+      "interface_from": ["extensions", "com.openai", "interface"],
+      "copy": ["name", "version", "description", "author", "homepage", "repository", "license", "keywords"],
+      "skills": "./skills/"
+    }
+  }
+}

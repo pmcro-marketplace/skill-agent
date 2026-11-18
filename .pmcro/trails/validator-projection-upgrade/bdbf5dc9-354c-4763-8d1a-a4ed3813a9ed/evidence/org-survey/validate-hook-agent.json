@@ -1,0 +1,38 @@
+{
+  "tool": "validate_plugin",
+  "tool_version": "1.0.0",
+  "target": "org/hook-agent",
+  "kind": "plugin",
+  "profile": "pmcro",
+  "summary": {
+    "errors": 3,
+    "warnings": 1,
+    "skills": 1
+  },
+  "findings": [
+    {
+      "id": "L1-005",
+      "severity": "WARNING",
+      "path": "plugin.json",
+      "message": "extensions.com.openai.interface.defaultPrompt is a string; the Codex plugin docs describe an array"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/hook/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/hook/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/hook/assets/request.json",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    }
+  ]
+}

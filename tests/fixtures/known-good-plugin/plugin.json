@@ -1,0 +1,27 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "fixture.good",
+  "version": "1.0.0",
+  "description": "Known-good fixture that must validate with no errors and no warnings.",
+  "author": {
+    "name": "Fixture Author"
+  },
+  "keywords": [
+    "fixture"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Fixture Good",
+        "shortDescription": "Known-good fixture",
+        "longDescription": "Known-good fixture that must validate with no errors and no warnings.",
+        "developerName": "Fixture Author",
+        "category": "Developer Tools",
+        "capabilities": [],
+        "defaultPrompt": [
+          "Run the fixture"
+        ]
+      }
+    }
+  }
+}

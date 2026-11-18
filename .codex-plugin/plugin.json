@@ -9,7 +9,7 @@
     "defaultPrompt": "For every actionable request, resolve the real Agent -> Plugin -> Skill -> Function. When the installed Hook Agent is available, allow it to autonomously emit and attempt only the applicable lifecycle functions above the target execution. Then invoke the real target capability and verify evidence. Hook emission is not execution; unavailable lifecycle providers return NOT_INVOKED."
   },
   "name": "skill",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Governed skill discovery and routing, escalating missing plugin-level capabilities to Plugin Agent.",
   "author": {
     "name": "Planner Agent"
@@ -19,5 +19,5 @@
     "agent",
     "governance"
   ],
-  "skills": "./skills"
+  "skills": "./skills/"
 }

@@ -1,0 +1,1 @@
+{"ts": "2026-11-18T06:17:58.345192+00:00", "lesson": "A stub-marker check over data files flagged its own limits file; marker matching is now line-leading and skipped for JSON", "earned_constraint": "every new rule ships a false-positive test against the known-good fixture"}

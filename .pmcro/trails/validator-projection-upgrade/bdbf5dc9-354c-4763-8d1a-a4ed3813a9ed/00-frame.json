@@ -1,0 +1,24 @@
+{
+  "trail_id": "bdbf5dc9-354c-4763-8d1a-a4ed3813a9ed",
+  "domain": "skill",
+  "base_commit": "806eb0d",
+  "branch": "claude/validator-projection-upgrade",
+  "seed_intent": "Independently determine and perform the next production upgrade, evidence first.",
+  "resolved_intent": "Replace existence-only validators and hand-copied Codex manifests with a deterministic Layer 0 validator and a generated projection, in the skill plugin (study milestones M1-M3 minimal slice).",
+  "sources": [
+    "agent-plugins spec 1.0.0 (agent-plugins-site labs.vercel.dev /specification, /plugin-authors/manifest)",
+    "agentskills.io/specification.md",
+    "developers.openai.com/codex/plugins/build.md",
+    "dotnet/skills @2877c71 (git ls-remote + sparse clone)",
+    "pmcro-marketplace org repos (12 cloned shallow)"
+  ],
+  "not_done": [
+    "no model/behavior evals",
+    "no host install test",
+    "no MCP call",
+    "Claude/Cursor/VS Code projections",
+    "marketplace catalogs",
+    "computed versions",
+    "other repos unchanged"
+  ]
+}

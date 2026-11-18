@@ -1,0 +1,10 @@
+{
+  "plugin": "skill-agent",
+  "targets": [
+    {
+      "target": "codex",
+      "output": ".codex-plugin/plugin.json",
+      "status": "in-sync"
+    }
+  ]
+}

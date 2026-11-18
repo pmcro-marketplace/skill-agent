@@ -1,0 +1,11 @@
+{
+  "plugin": "org/planner-agent",
+  "targets": [
+    {
+      "target": "codex",
+      "output": ".codex-plugin/plugin.json",
+      "status": "drift",
+      "diff": "--- a/.codex-plugin/plugin.json\n+++ b/.codex-plugin/plugin.json\n@@ -1,9 +1,4 @@\n {\n-  \"author\": {\n-    \"email\": \"planneragent001@gmail.com\",\n-    \"name\": \"Planner Agent\"\n-  },\n-  \"description\": \"Plan bounded work from an admitted PMCR-O intent using validated resources and observable acceptance criteria.\",\n   \"interface\": {\n     \"capabilities\": [],\n     \"category\": \"Developer Tools\",\n@@ -13,12 +8,17 @@\n     \"longDescription\": \"Plan bounded work from an admitted PMCR-O intent using validated resources and observable acceptance criteria.\",\n     \"shortDescription\": \"Plan bounded PMCR-O work\"\n   },\n+  \"name\": \"planner\",\n+  \"version\": \"0.1.0\",\n+  \"description\": \"Plan bounded work from an admitted PMCR-O intent using validated resources and observable acceptance criteria.\",\n+  \"author\": {\n+    \"email\": \"planneragent001@gmail.com\",\n+    \"name\": \"Planner Agent\"\n+  },\n   \"keywords\": [\n     \"pmcro\",\n     \"agent\",\n     \"governance\"\n   ],\n-  \"name\": \"planner\",\n-  \"skills\": \"./skills\",\n-  \"version\": \"0.1.0\"\n-}+  \"skills\": \"./skills/\"\n+}\n"
+    }
+  ]
+}

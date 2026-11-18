@@ -1,0 +1,11 @@
+{
+  "plugin": "org/hook-agent",
+  "targets": [
+    {
+      "target": "codex",
+      "output": ".codex-plugin/plugin.json",
+      "status": "drift",
+      "diff": "--- a/.codex-plugin/plugin.json\n+++ b/.codex-plugin/plugin.json\n@@ -1,9 +1,4 @@\n {\n-  \"author\": {\n-    \"email\": \"planneragent001@gmail.com\",\n-    \"name\": \"Planner Agent\"\n-  },\n-  \"description\": \"Hook Agent providing autonomous lifecycle interception and governance around installed agent capabilities.\",\n   \"interface\": {\n     \"capabilities\": [],\n     \"category\": \"Developer Tools\",\n@@ -13,6 +8,13 @@\n     \"longDescription\": \"Hook Agent provides the shared lifecycle layer that surrounds installed agent capability execution without replacing business logic.\",\n     \"shortDescription\": \"Govern agent lifecycle hooks\"\n   },\n+  \"name\": \"hook\",\n+  \"version\": \"0.1.0\",\n+  \"description\": \"Hook Agent providing autonomous lifecycle interception and governance around installed agent capabilities.\",\n+  \"author\": {\n+    \"email\": \"planneragent001@gmail.com\",\n+    \"name\": \"Planner Agent\"\n+  },\n   \"keywords\": [\n     \"hook\",\n     \"agent\",\n@@ -20,7 +22,5 @@\n     \"governance\",\n     \"pmcro\"\n   ],\n-  \"name\": \"hook\",\n-  \"skills\": \"./skills\",\n-  \"version\": \"0.1.0\"\n-}+  \"skills\": \"./skills/\"\n+}\n"
+    }
+  ]
+}
