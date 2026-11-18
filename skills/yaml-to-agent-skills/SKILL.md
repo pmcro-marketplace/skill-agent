@@ -1,45 +1,47 @@
 ---
 name: yaml-to-agent-skills
-description: "Convert an existing declarative YAML capability inventory into PMCR-O Layer 0 Agent Skill candidates without inventing providers. USE FOR deriving reusable skill candidates from Aspire/resource/service/MCP/workflow YAML after the source template has been run or reviewed. DO NOT USE FOR executing generated capabilities, structural validation (use validate), host manifest projection (use project), or marketplace registration (use skill routing and the marketplace owner)."
+description: "Resolve functionality declared in Aspire/resource/service/MCP/workflow YAML into reusable Agent Skills by reusing existing skills first and queuing proven gaps for the existing skill-creator/create-skill capability. USE FOR turning a declarative YAML capability inventory into reuse decisions plus pinned create-skill requests. DO NOT USE FOR authoring final skills directly, executing YAML commands/providers, structural validation (use validate), host manifest projection (use project), or marketplace registration."
 ---
 # yaml-to-agent-skills
 
 ## Purpose
-Turn functionality already declared in an existing YAML template into deterministic Agent Skill candidates while preserving the Capability Reuse Law.
+Treat an existing YAML template as the authoritative capability inventory, reuse validated skills first, and route only true gaps to the existing skill-creator/create-skill capability.
 
 ## When to Use
-- After an Aspire, local, or GitHub workflow template has exposed resources or jobs that should become reusable skills.
-- When one YAML file is the bounded source inventory and the result should be one Layer 0 candidate per declared capability.
-- When existing skill roots must be checked first so already-owned capabilities are reused rather than recreated.
+- After an Aspire, local, or GitHub workflow template has exposed resources, services, MCP servers, skills, plugins, capabilities, or jobs.
+- When the source YAML should be looped over deterministically without inventing a second authoring system.
+- When missing capabilities must be handed to the existing Skill Creator rather than written ad hoc.
 
 ## When Not to Use
-- Do not execute the generated capability or claim its runtime or provider was invoked.
-- Do not replace validate; generated candidates must pass the existing validator.
-- Do not replace project; host manifests remain projections of canonical plugin metadata.
-- Do not register or publish generated candidates directly to a marketplace.
+- Do not author the final Agent Skill package here; invoke skill-creator/create-skill for each queued gap.
+- Do not execute run, command, uses, endpoint, model, image, project, or URL fields from the YAML.
+- Do not replace validate or project.
+- Do not register, install, publish, or accept generated output automatically.
 
 ## Inputs
-A YAML or JSON source file, an output directory, and optional existing skill roots or a skill-name index.
+A YAML or JSON source file, an output directory for creator requests, and optional existing skill roots or a skill-name index.
 
 ## Deliverables
-Deterministic candidate skill directories containing SKILL.md, scripts, references, and assets, plus a report distinguishing generated, reused, and blocked identities.
+A deterministic report of reused capabilities and pinned create-skill requests for missing capabilities. The requests retain source evidence, PMCR-O Layer 0 constraints, and the exact Skill Creator repository/ref/plugin/skill identity.
 
 ## Workflow
-1. Run or otherwise establish the source template separately; this converter treats the file as untrusted data.
+1. Run or otherwise establish the source template in its own governed execution job.
 2. Discover declared containers in a fixed order: capabilities, resources, services, mcpServers, plugins, skills, and jobs.
-3. Resolve existing skill identities from supplied roots or an index and mark matches as reused.
-4. Generate only missing identities under the requested output directory.
-5. Run scripts/convert.py again on the same source; output identity and source hashes must remain deterministic.
-6. Validate every generated candidate with the existing validate skill before marketplace admission.
+3. Resolve existing skill identities and mark matches as reused.
+4. For every true gap, write one create-skill request using the pinned existing creator capability.
+5. Invoke skill-creator/create-skill on the declared runner for each request.
+6. Validate every authored skill with validate before any marketplace admission.
+7. Preserve creator/provider execution evidence separately; request generation itself remains NOT_INVOKED.
 
 ## Validation
-The source adapters, identity rules, reuse behavior, and execution boundary are defined in references/contract.md. The regression fixture is assets/example.yaml. Generated skills record provider execution as NOT_INVOKED; conversion is not execution.
+The resolution, creator pin, identity rules, and request schema are defined in references/contract.md. The regression fixture is assets/example.yaml. scripts/convert.py proves request generation only; it never claims create-skill executed.
 
 ## Pitfalls
-- A YAML run, command, uses, endpoint, model, project, image, or URL field is evidence of declared functionality, not authorization to execute it.
+- A YAML declaration proves that functionality was declared, not that it executed.
+- The create-skill capability is the authoring authority; this skill must not duplicate it.
 - Identity collisions are blocked rather than silently renamed.
-- A generated candidate is not installed, accepted, published, or proven behaviorally correct.
-- The source template remains authoritative; generated skill candidates are projections.
+- A create-skill request is not an authored, validated, installed, published, or accepted skill.
+- The source template remains authoritative and generated requests are projections.
 
 ## Resources
 See references/contract.md, assets/example.yaml, and scripts/convert.py.
