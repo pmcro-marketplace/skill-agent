@@ -1,0 +1,20 @@
+{
+  "tool": "validate_plugin",
+  "tool_version": "1.0.0",
+  "target": "org/plugin-agent",
+  "kind": "plugin",
+  "profile": "spec",
+  "summary": {
+    "errors": 0,
+    "warnings": 1,
+    "skills": 6
+  },
+  "findings": [
+    {
+      "id": "L1-005",
+      "severity": "WARNING",
+      "path": "plugin.json",
+      "message": "extensions.com.openai.interface.defaultPrompt is a string; the Codex plugin docs describe an array"
+    }
+  ]
+}

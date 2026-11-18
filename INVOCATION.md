@@ -17,3 +17,9 @@ Core flow:
 This plugin does not implement lifecycle functions.
 If no real lifecycle provider exists, Hook Agent returns `NOT_INVOKED`.
 **Emission is not invocation.**
+
+## Functions added in 0.3.0
+- `/skill:validate:plugin` runs `skills/validate/scripts/validate_plugin.py --plugin <dir>`; `/skill:validate:skill` runs it with `--skill <dir>`. Structural proof only.
+- `/skill:project:codex` runs `skills/project/scripts/project_hosts.py --plugin <dir>`; add `--check` to fail on drift.
+
+Canonical source is the root `plugin.json`. `.codex-plugin/plugin.json` is generated; never edit it by hand.

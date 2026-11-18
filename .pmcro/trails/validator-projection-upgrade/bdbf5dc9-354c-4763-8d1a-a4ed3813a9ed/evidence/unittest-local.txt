@@ -1,0 +1,45 @@
+test_canonical_is_never_modified (test_project_hosts.Projection.test_canonical_is_never_modified) ... ok
+test_check_detects_missing_and_drift_without_writing (test_project_hosts.Projection.test_check_detects_missing_and_drift_without_writing) ... ok
+test_generate_is_idempotent_and_byte_stable (test_project_hosts.Projection.test_generate_is_idempotent_and_byte_stable) ... ok
+test_mapping_content (test_project_hosts.Projection.test_mapping_content) ... ok
+test_no_interface_is_omitted_not_invented (test_project_hosts.Projection.test_no_interface_is_omitted_not_invented) ... ok
+test_regeneration_repairs_hand_edit (test_project_hosts.Projection.test_regeneration_repairs_hand_edit) ... ok
+test_repository_projection_in_sync (test_project_hosts.Projection.test_repository_projection_in_sync) ... ok
+test_unusable_canonical_is_blocked_and_writes_nothing (test_project_hosts.Projection.test_unusable_canonical_is_blocked_and_writes_nothing) ... ok
+test_exit_codes (test_validate_plugin.Cli.test_exit_codes) ... ok
+test_warnings_as_errors (test_validate_plugin.Cli.test_warnings_as_errors) ... ok
+test_parser_agrees_with_pyyaml_on_fixtures (test_validate_plugin.KnownGood.test_parser_agrees_with_pyyaml_on_fixtures) ... ok
+test_repository_plugin_has_no_errors (test_validate_plugin.KnownGood.test_repository_plugin_has_no_errors) ... ok
+test_zero_errors_and_zero_warnings (test_validate_plugin.KnownGood.test_zero_errors_and_zero_warnings) ... ok
+test_bad_plugin_name (test_validate_plugin.NegativePlugin.test_bad_plugin_name) ... ok
+test_bad_schema (test_validate_plugin.NegativePlugin.test_bad_schema) ... ok
+test_default_prompt_string_warns (test_validate_plugin.NegativePlugin.test_default_prompt_string_warns) ... ok
+test_inline_mcp_forbidden (test_validate_plugin.NegativePlugin.test_inline_mcp_forbidden) ... ok
+test_mcp_json_needs_schema (test_validate_plugin.NegativePlugin.test_mcp_json_needs_schema) ... ok
+test_missing_manifest (test_validate_plugin.NegativePlugin.test_missing_manifest) ... ok
+test_unknown_top_level_is_warning_only (test_validate_plugin.NegativePlugin.test_unknown_top_level_is_warning_only) ... ok
+test_absolute_link (test_validate_plugin.NegativeSkill.test_absolute_link) ... ok
+test_asset_over_cap (test_validate_plugin.NegativeSkill.test_asset_over_cap) ... ok
+test_body_budget_warnings (test_validate_plugin.NegativeSkill.test_body_budget_warnings) ... ok
+test_description_too_long (test_validate_plugin.NegativeSkill.test_description_too_long) ... ok
+test_dotdot_link (test_validate_plugin.NegativeSkill.test_dotdot_link) ... ok
+test_exclusion_without_sibling_warns (test_validate_plugin.NegativeSkill.test_exclusion_without_sibling_warns) ... ok
+test_folder_without_skill_md_warns (test_validate_plugin.NegativeSkill.test_folder_without_skill_md_warns) ... ok
+test_menu_budget_warns (test_validate_plugin.NegativeSkill.test_menu_budget_warns) ... ok
+test_missing_artifact_folder_content (test_validate_plugin.NegativeSkill.test_missing_artifact_folder_content) ... ok
+test_missing_link_target (test_validate_plugin.NegativeSkill.test_missing_link_target) ... ok
+test_missing_routing_clauses_only_in_pmcro_profile (test_validate_plugin.NegativeSkill.test_missing_routing_clauses_only_in_pmcro_profile) ... ok
+test_name_must_equal_folder (test_validate_plugin.NegativeSkill.test_name_must_equal_folder) ... ok
+test_orphan_file (test_validate_plugin.NegativeSkill.test_orphan_file) ... ok
+test_pipe_to_shell_warns (test_validate_plugin.NegativeSkill.test_pipe_to_shell_warns) ... ok
+test_stub_file (test_validate_plugin.NegativeSkill.test_stub_file) ... ok
+test_todo_marker_is_stub (test_validate_plugin.NegativeSkill.test_todo_marker_is_stub) ... ok
+test_unquoted_colon_is_rejected_like_strict_yaml (test_validate_plugin.NegativeSkill.test_unquoted_colon_is_rejected_like_strict_yaml) ... ok
+test_uppercase_name (test_validate_plugin.NegativeSkill.test_uppercase_name) ... ok
+test_word_todo_in_prose_is_not_a_stub (test_validate_plugin.NegativeSkill.test_word_todo_in_prose_is_not_a_stub) ... ok
+test_xml_tag_in_description (test_validate_plugin.NegativeSkill.test_xml_tag_in_description) ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 0.918s
+
+OK

@@ -1,0 +1,50 @@
+{
+  "tool": "validate_plugin",
+  "tool_version": "1.0.0",
+  "target": "pmcro-agent",
+  "kind": "plugin",
+  "profile": "pmcro",
+  "summary": {
+    "errors": 5,
+    "warnings": 1,
+    "skills": 2
+  },
+  "findings": [
+    {
+      "id": "L1-005",
+      "severity": "WARNING",
+      "path": "plugin.json",
+      "message": "extensions.com.openai.interface.defaultPrompt is a string; the Codex plugin docs describe an array"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/interpret/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/interpret/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/pmcro/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/pmcro/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/pmcro/references/protocol.md",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    }
+  ]
+}

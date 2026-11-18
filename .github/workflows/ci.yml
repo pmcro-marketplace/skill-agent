@@ -1,0 +1,26 @@
+name: validate
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install optional YAML oracle used by one test
+        run: python -m pip install pyyaml
+      - name: Unit tests (known-good, known-bad, projection)
+        run: python -m unittest discover -s tests -v
+      - name: Validate this plugin (Layer 0 errors fail the job)
+        run: python skills/validate/scripts/validate_plugin.py --plugin . --profile pmcro
+      - name: Generated projections are in sync with plugin.json
+        run: python skills/project/scripts/project_hosts.py --plugin . --check

@@ -1,6 +1,13 @@
 ---
 name: skill
-description: Discover and route skill-domain capabilities before any creation.
+description: >-
+  Discover and route skill-domain capabilities before any creation, reusing validated skills first.
+  USE FOR: finding the narrowest existing skill for a request and escalating a proven plugin-level gap
+  to Plugin Agent. DO NOT USE FOR: structural validation (use validate), generating host manifests
+  (use project), or authoring plugin packages (use Plugin Agent).
+license: Proprietary
+metadata:
+  owner: pmcro-marketplace
 ---
 # skill
 
@@ -33,4 +40,4 @@ A PASS requires actual evidence. A declared path or emitted invocation is not pr
 Emission is not invocation. Discovery is not authorization. Skills-only packaging does not itself create a runtime tool.
 
 ## Resources
-See references/contract.md and assets/request.json.
+See references/contract.md, assets/request.json and scripts/validate.py (a self-check that runs the real validator on this skill).

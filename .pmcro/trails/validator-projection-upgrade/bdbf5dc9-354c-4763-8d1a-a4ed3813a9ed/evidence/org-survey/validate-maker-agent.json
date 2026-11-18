@@ -1,0 +1,32 @@
+{
+  "tool": "validate_plugin",
+  "tool_version": "1.0.0",
+  "target": "org/maker-agent",
+  "kind": "plugin",
+  "profile": "pmcro",
+  "summary": {
+    "errors": 2,
+    "warnings": 1,
+    "skills": 1
+  },
+  "findings": [
+    {
+      "id": "L1-005",
+      "severity": "WARNING",
+      "path": "plugin.json",
+      "message": "extensions.com.openai.interface.defaultPrompt is a string; the Codex plugin docs describe an array"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/make/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/make/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    }
+  ]
+}

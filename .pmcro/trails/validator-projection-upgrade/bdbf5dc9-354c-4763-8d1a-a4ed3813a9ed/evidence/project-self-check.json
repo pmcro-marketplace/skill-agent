@@ -1,0 +1,10 @@
+{
+  "plugin": ".",
+  "targets": [
+    {
+      "target": "codex",
+      "output": ".codex-plugin/plugin.json",
+      "status": "in-sync"
+    }
+  ]
+}

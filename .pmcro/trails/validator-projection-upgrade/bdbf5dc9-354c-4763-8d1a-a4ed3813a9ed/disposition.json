@@ -1,0 +1,9 @@
+{
+  "status": "PENDING_CI",
+  "note": "Local evidence only at this commit. A later 05-ci.jsonl and final disposition are appended after the GitHub Actions run; this file is not rewritten.",
+  "blocked": [
+    "Claude/Cursor/VS Code install tests",
+    "runtime MCP call",
+    "PR creation (no authenticated GitHub API in this session)"
+  ]
+}

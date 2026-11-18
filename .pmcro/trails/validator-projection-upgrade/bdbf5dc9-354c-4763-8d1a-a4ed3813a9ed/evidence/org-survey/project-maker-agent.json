@@ -1,0 +1,11 @@
+{
+  "plugin": "org/maker-agent",
+  "targets": [
+    {
+      "target": "codex",
+      "output": ".codex-plugin/plugin.json",
+      "status": "drift",
+      "diff": "--- a/.codex-plugin/plugin.json\n+++ b/.codex-plugin/plugin.json\n@@ -1,9 +1,4 @@\n {\n-  \"author\": {\n-    \"email\": \"planneragent001@gmail.com\",\n-    \"name\": \"Planner Agent\"\n-  },\n-  \"description\": \"Produce the authorized artifact or state change using the narrowest real creator or provider capability.\",\n   \"interface\": {\n     \"capabilities\": [],\n     \"category\": \"Developer Tools\",\n@@ -13,12 +8,17 @@\n     \"longDescription\": \"Produce the authorized artifact or state change using the narrowest real creator or provider capability.\",\n     \"shortDescription\": \"Make authorized artifacts\"\n   },\n+  \"name\": \"maker\",\n+  \"version\": \"0.1.0\",\n+  \"description\": \"Produce the authorized artifact or state change using the narrowest real creator or provider capability.\",\n+  \"author\": {\n+    \"email\": \"planneragent001@gmail.com\",\n+    \"name\": \"Planner Agent\"\n+  },\n   \"keywords\": [\n     \"pmcro\",\n     \"agent\",\n     \"governance\"\n   ],\n-  \"name\": \"maker\",\n-  \"skills\": \"./skills\",\n-  \"version\": \"0.1.0\"\n-}+  \"skills\": \"./skills/\"\n+}\n"
+    }
+  ]
+}

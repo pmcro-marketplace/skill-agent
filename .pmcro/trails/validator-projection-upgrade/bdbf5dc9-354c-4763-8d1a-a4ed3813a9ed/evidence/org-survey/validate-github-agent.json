@@ -1,0 +1,92 @@
+{
+  "tool": "validate_plugin",
+  "tool_version": "1.0.0",
+  "target": "org/github-agent",
+  "kind": "plugin",
+  "profile": "pmcro",
+  "summary": {
+    "errors": 12,
+    "warnings": 1,
+    "skills": 6
+  },
+  "findings": [
+    {
+      "id": "L1-005",
+      "severity": "WARNING",
+      "path": "plugin.json",
+      "message": "extensions.com.openai.interface.defaultPrompt is a string; the Codex plugin docs describe an array"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/actions/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/actions/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/change-management/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/change-management/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/github/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/github/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/local-actions/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/local-actions/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/repository-discovery/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/repository-discovery/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    },
+    {
+      "id": "PM-001",
+      "severity": "ERROR",
+      "path": "skills/sync/SKILL.md",
+      "message": "description must carry both 'USE FOR' and 'DO NOT USE FOR' routing clauses"
+    },
+    {
+      "id": "PM-004",
+      "severity": "ERROR",
+      "path": "skills/sync/scripts/validate.py",
+      "message": "file is not referenced from SKILL.md (orphan)"
+    }
+  ]
+}

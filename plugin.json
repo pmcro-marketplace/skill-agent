@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "skill",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Governed skill discovery and routing, escalating missing plugin-level capabilities to Plugin Agent.",
   "author": {
     "name": "Planner Agent"

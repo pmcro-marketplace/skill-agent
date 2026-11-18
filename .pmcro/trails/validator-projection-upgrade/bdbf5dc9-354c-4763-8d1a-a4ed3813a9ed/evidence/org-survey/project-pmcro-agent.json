@@ -1,0 +1,11 @@
+{
+  "plugin": "pmcro-agent",
+  "targets": [
+    {
+      "target": "codex",
+      "output": ".codex-plugin/plugin.json",
+      "status": "drift",
+      "diff": "--- a/.codex-plugin/plugin.json\n+++ b/.codex-plugin/plugin.json\n@@ -19,5 +19,5 @@\n     \"agent\",\n     \"governance\"\n   ],\n-  \"skills\": \"./skills\"\n+  \"skills\": \"./skills/\"\n }\n"
+    }
+  ]
+}

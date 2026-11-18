@@ -1,0 +1,5 @@
+{"ts": "2026-11-18T06:17:58.345156+00:00", "check": "unittest", "result": "40 tests OK (local, Python 3.13)", "evidence": "evidence/unittest-local.txt"}
+{"ts": "2026-11-18T06:17:58.345157+00:00", "check": "validate self", "result": "0 errors, 1 warning (L1-005)", "evidence": "evidence/validate-self.json"}
+{"ts": "2026-11-18T06:17:58.345159+00:00", "check": "project --check self", "result": "in-sync", "evidence": "evidence/project-self-check.json"}
+{"ts": "2026-11-18T06:17:58.345160+00:00", "check": "validate 12 other org repos (read-only)", "result": "spec profile 0 errors in all 12; pmcro profile fails PM-001 x26 and PM-004 x26", "evidence": "evidence/org-survey/"}
+{"ts": "2026-11-18T06:17:58.345161+00:00", "check": "generator parity vs 12 hand-copied codex manifests", "result": "semantically identical in all 12; only './skills' vs './skills/' and key order differ", "evidence": "evidence/org-survey/project-*.json"}
