@@ -1,0 +1,19 @@
+{
+  "supersedes": "disposition.json (PENDING_CI, unmodified)",
+  "status": "PASS_WITH_LIMITS",
+  "pass": [
+    "static structure",
+    "manifest and skill rules",
+    "generated projection parity",
+    "40 unit tests locally and in CI (3.10, 3.13)"
+  ],
+  "not_verified": [
+    "host install on Claude/Codex/Cursor/VS Code",
+    "MCP runtime call",
+    "model behavior (activation, dormancy, baseline)",
+    "Python 3.9"
+  ],
+  "awaiting_human": [
+    "review and merge of branch claude/validator-projection-upgrade; no merge performed"
+  ]
+}
