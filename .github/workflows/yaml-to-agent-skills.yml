@@ -5,11 +5,13 @@ on:
     branches: ["claude/yaml-to-agent-skills"]
     paths:
       - "skills/yaml-to-agent-skills/**"
+      - "eng/SkillCreatorRunner/**"
       - "tests/test_yaml_to_agent_skills.py"
       - ".github/workflows/yaml-to-agent-skills.yml"
   pull_request:
     paths:
       - "skills/yaml-to-agent-skills/**"
+      - "eng/SkillCreatorRunner/**"
       - "tests/test_yaml_to_agent_skills.py"
       - ".github/workflows/yaml-to-agent-skills.yml"
   workflow_call:
@@ -53,6 +55,10 @@ jobs:
         with:
           python-version: "3.13"
 
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
       - name: Install YAML parser
         run: python -m pip install pyyaml
 
@@ -67,6 +73,9 @@ jobs:
           assert 'name: create-skill' in skill
           print('PASS pinned creator: skill-creator/create-skill')
           PY
+
+      - name: Build MAF Skill Creator runner
+        run: dotnet build eng/SkillCreatorRunner/SkillCreatorRunner.csproj -c Release --nologo
 
       - name: Unit-test YAML resolver
         run: python -m unittest tests/test_yaml_to_agent_skills.py -v
@@ -133,5 +142,5 @@ jobs:
           echo '## YAML to Agent Skills' >> "$GITHUB_STEP_SUMMARY"
           echo '- Existing skills are reused first.' >> "$GITHUB_STEP_SUMMARY"
           echo '- Missing capabilities are queued for skill-creator/create-skill.' >> "$GITHUB_STEP_SUMMARY"
-          echo '- Skill Creator is pinned and verified, but NOT_INVOKED in this cloud proof.' >> "$GITHUB_STEP_SUMMARY"
-          echo '- A governed self-hosted Aspire/Ollama job must perform creator execution and later validation.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Skill Creator runner compiles in cloud CI but creator execution remains NOT_INVOKED here.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- A protected self-hosted Aspire/Ollama job performs live creator execution and later validation.' >> "$GITHUB_STEP_SUMMARY"
