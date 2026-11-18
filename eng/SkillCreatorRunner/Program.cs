@@ -93,13 +93,13 @@ internal static class Program
             using var packageDoc = ParseResult(result.Text);
             var files = ValidateFiles(packageDoc.RootElement, skillName);
 
-            foreach (var item in files)
+            foreach (KeyValuePair<string, string> item in files)
             {
                 string relative = item.Key.Replace('/', Path.DirectorySeparatorChar);
                 string destination = Path.GetFullPath(Path.Combine(target, relative));
                 string targetPrefix = target.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
                 if (!destination.StartsWith(targetPrefix, StringComparison.OrdinalIgnoreCase))
-                    throw new InvalidOperationException($"Generated path escaped skill root: {item.Key}");
+                    throw new InvalidOperationException("Generated path escaped skill root: " + item.Key);
                 Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
                 await File.WriteAllTextAsync(destination, item.Value, new UTF8Encoding(false));
             }
@@ -120,7 +120,7 @@ internal static class Program
                 invocation = new
                 {
                     provider = "Microsoft.Agents.AI.AgentSkillsProvider",
-                    model,
+                    model = model,
                     endpoint = "loopback",
                     creator_execution = "INVOKED"
                 },
@@ -139,4 +139,129 @@ internal static class Program
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine(Jsol‰M•É¥…±¥é•È¹M•É¥…±¥é”¡¹•Ü(€€€€€€€€€€€ì(€€€€€€€€€€€€€€€Í¡•µ„€ô€‰ÁµÉ¼¹É•…Ñ”µÍ­¥±°µ¥¹Ù½…Ñ¥½¸µÉ••¥ÁĞ½ØÄˆ°(€€€€€€€€€€€€€€€ÍÑ…ÑÕÌ€ô€‰%0ˆ°(€€€€€€€€€€€€€€€É•…Ñ½É}•á•ÕÑ¥½¸€ô€‰9=Q}YI%%ˆ°(€€€€€€€€€€€€€€€•ÉÉ½È€ô•à¹5•ÍÍ…”(€€€€€€€€€€€ô¤¤ì(€€€€€€€€€€€É•ÑÕÉ¸€Äì(€€€€€€€ô(€€€ô((€€€ÁÉ¥Ù…Ñ”ÍÑ…Ñ¥ŒÙ½¥Y…±¥‘…Ñ•I•ÅÕ•ÍĞ¡)Í½¹±•µ•¹ĞÉ•ÅÕ•ÍĞ¤(€€€ì(€€€€€€€¥˜€¡É•ÅÕ•ÍĞ¹•ÑAÉ½Á•ÉÑä ‰Í¡•µ„ˆ¤¹•ÑMÑÉ¥¹œ ¤€„ôáÁ•Ñ•‘M¡•µ„¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰U¹ÍÕÁÁ½ÉÑ•É•ÅÕ•ÍĞÍ¡•µ„¸ˆ¤ì((€€€€€€€)Í½¹±•µ•¹ĞÉ•…Ñ½È€ôÉ•ÅÕ•ÍĞ¹•ÑAÉ½Á•ÉÑä ‰É•…Ñ½Èˆ¤ì(€€€€€€€¥˜€¡É•…Ñ½È¹•ÑAÉ½Á•ÉÑä ‰É•Á½Í¥Ñ½Éäˆ¤¹•ÑMÑÉ¥¹œ ¤€„ôáÁ•Ñ•‘I•Á½Í¥Ñ½Éäñğ(€€€€€€€€€€€É•…Ñ½È¹•ÑAÉ½Á•ÉÑä ‰É•˜ˆ¤¹•ÑMÑÉ¥¹œ ¤€„ôáÁ•Ñ•‘I•˜ñğ(€€€€€€€€€€€É•…Ñ½È¹•ÑAÉ½Á•ÉÑä ‰Á±Õ¥¸ˆ¤¹•ÑMÑÉ¥¹œ ¤€„ôáÁ•Ñ•‘A±Õ¥¸ñğ(€€€€€€€€€€€É•…Ñ½È¹•ÑAÉ½Á•ÉÑä ‰Í­¥±°ˆ¤¹•ÑMÑÉ¥¹œ ¤€„ôáÁ•Ñ•‘M­¥±°¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰I•ÅÕ•ÍĞ¥Ì¹½ĞÁ¥¹¹•Ñ¼Ñ¡”…ÕÑ¡½É¥é•É•…Ñ½È¸ˆ¤ì((€€€€€€€¥˜€¡É•ÅÕ•ÍĞ¹•ÑAÉ½Á•ÉÑä ‰É•…Ñ½É}•á•ÕÑ¥½¸ˆ¤¹•ÑMÑÉ¥¹œ ¤€„ô€‰9=Q}%9Y=-ˆñğ(€€€€€€€€€€€É•ÅÕ•ÍĞ¹•ÑAÉ½Á•ÉÑä ‰ÍÑ…ÑÕÌˆ¤¹•ÑMÑÉ¥¹œ ¤€„ô€‰Ie}=I}IQ=Hˆ¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰%¹Ù…±¥ÁÉ”µ¥¹Ù½…Ñ¥½¸ÍÑ…Ñ”¸ˆ¤ì(€€€ô((€€€ÁÉ¥Ù…Ñ”ÍÑ…Ñ¥ŒÍÑÉ¥¹œ	Õ¥±‘AÉ½µÁĞ¡)Í½¹±•µ•¹ĞÉ•ÅÕ•ÍĞ¤€ôø€ˆˆˆ)%¹Ù½­”É•…Ñ”µÍ­¥±°™½ÈÑ¡¥Ì•á…Ğ‰½Õ¹‘•É•ÅÕ•ÍĞè()ííÉ•ÅÕ•ÍĞ¹•ÑI…İQ•áĞ ¥õô()I•ÑÕÉ¸)M=8½¹±äİ¥Ñ Ñ¡¥ÌÍ¡…Á”è)ì‰™¥±•Ìˆéì‰M-%10¹µˆèˆ¸¸¸ˆ°‰ÍÉ¥ÁÑÌ¼ñ™¥±”øˆèˆ¸¸¸ˆ°‰É•™•É•¹•Ì¼ñ™¥±”øˆèˆ¸¸¸ˆ°‰…ÍÍ•ÑÌ¼ñ™¥±”øˆèˆ¸¸¸‰õô()I•ÅÕ¥É•µ•¹ÑÌè(´%¹±Õ‘”M-%10¹µ…¹…Ğ±•…ÍĞ½¹”¹½¹•µÁÑä™¥±”¥¸ÍÉ¥ÁÑÌ¼°É•™•É•¹•Ì¼°…¹…ÍÍ•ÑÌ¼¸(´Ù•ÉäÍÕÁÁ½ÉĞ™¥±”µÕÍĞ‰”É•™•É•¹•™É½´M-%10¹µ¸(´M-%10¹µ‘•ÍÉ¥ÁÑ¥½¸µÕÍĞ¥¹±Õ‘”UM=H…¹<9=PUM=H¸(´¼¹½Ğ¥¹±Õ‘”™¥±•Ì½ÕÑÍ¥‘”M-%10¹µ°ÍÉ¥ÁÑÌ¼°É•™•É•¹•Ì¼°½È…ÍÍ•ÑÌ¼¸(´¼¹½Ğ•á•ÕÑ”…¹ä•¹•É…Ñ•ÍÉ¥ÁĞ½È½µµ…¹µ±¥­”Í½ÕÉ”™¥•±¸(ˆˆˆì((€€€ÁÉ¥Ù…Ñ”ÍÑ…Ñ¥Œ)Í½¹½Õµ•¹ĞA…ÉÍ•I•ÍÕ±Ğ¡ÍÑÉ¥¹œÑ•áĞ¤(€€€ì(€€€€€€€ÍÑÉ¥¹œÑÉ¥µµ•€ôÑ•áĞ¹QÉ¥´ ¤ì(€€€€€€€¥¹ĞÍÑ…ÉĞ€ôÑÉ¥µµ•¹%¹‘•á=˜ ìœ¤ì(€€€€€€€¥¹Ğ•¹€ôÑÉ¥µµ•¹1…ÍÑ%¹‘•á=˜ ôœ¤ì(€€€€€€€¥˜€¡ÍÑ…ÉĞ€ğ€Àñğ•¹€ğôÍÑ…ÉĞ¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰É•…Ñ”µÍ­¥±°½ÕÑÁÕĞ‘¥¹½Ğ½¹Ñ…¥¸)M=8¸ˆ¤ì(€€€€€€€É•ÑÕÉ¸)Í½¹½Õµ•¹Ğ¹A…ÉÍ”¡ÑÉ¥µµ•‘mÍÑ…ÉĞ¸¸¡•¹€¬€Ä¥t¤ì(€€€ô((€€€ÁÉ¥Ù…Ñ”ÍÑ…Ñ¥ŒM½ÉÑ•‘¥Ñ¥½¹…ÉäñÍÑÉ¥¹œ°ÍÑÉ¥¹œøY…±¥‘…Ñ•¥±•Ì¡)Í½¹±•µ•¹ĞÉ½½Ğ°ÍÑÉ¥¹œÍ­¥±±9…µ”¤(€€€ì(€€€€€€€¥˜€ …É½½Ğ¹QÉå•ÑAÉ½Á•ÉÑä ‰™¥±•Ìˆ°½ÕĞ)Í½¹±•µ•¹Ğ•±•µ•¹Ğ¤ñğ(€€€€€€€€€€€•±•µ•¹Ğ¹Y…±Õ•-¥¹€„ô)Í½¹Y…±Õ•-¥¹¹=‰©•Ğ¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰=ÕÑÁÕĞµÕÍĞ½¹Ñ…¥¸„™¥±•Ì½‰©•Ğ¸ˆ¤ì((€€€€€€€Ù…È™¥±•Ì€ô¹•ÜM½ÉÑ•‘¥Ñ¥½¹…ÉäñÍÑÉ¥¹œ°ÍÑÉ¥¹œø¡MÑÉ¥¹½µÁ…É•È¹=É‘¥¹…°¤ì(€€€€€€€±½¹œÑ½Ñ…±	åÑ•Ì€ô€Àì((€€€€€€€™½É•… €¡)Í½¹AÉ½Á•ÉÑäÁÉ½Á•ÉÑä¥¸•±•µ•¹Ğ¹¹Õµ•É…Ñ•=‰©•Ğ ¤¤(€€€€€€€ì(€€€€€€€€€€€ÍÑÉ¥¹œÁ…Ñ €ôÁÉ½Á•ÉÑä¹9…µ”ì(€€€€€€€€€€€¥˜€¡Á…Ñ ¹½¹Ñ…¥¹Ì qpœ¤ñğÁ…Ñ ¹MÑ…ÉÑÍ]¥Ñ  œ¼œ¤ñğ(€€€€€€€€€€€€€€€Á…Ñ ¹½¹Ñ…¥¹Ì ˆ¸¸¼ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤ñğ(€€€€€€€€€€€€€€€Á…Ñ ¹½¹Ñ…¥¹Ì ˆ¼¸¸ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤ñğ(€€€€€€€€€€€€€€€A…Ñ ¹%ÍA…Ñ¡I½½Ñ•¡Á…Ñ ¤¤(€€€€€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰U¹Í…™”•¹•É…Ñ•Á…Ñ èíÁ…Ñ¡ôˆ¤ì((€€€€€€€€€€€‰½½°…±±½İ•€ôÁ…Ñ €ôô€‰M-%10¹µˆñğ(€€€€€€€€€€€€€€€Á…Ñ ¹MÑ…ÉÑÍ]¥Ñ  ‰ÍÉ¥ÁÑÌ¼ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤ñğ(€€€€€€€€€€€€€€€Á…Ñ ¹MÑ…ÉÑÍ]¥Ñ  ‰É•™•É•¹•Ì¼ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤ñğ(€€€€€€€€€€€€€€€Á…Ñ ¹MÑ…ÉÑÍ]¥Ñ  ‰…ÍÍ•ÑÌ¼ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤ì(€€€€€€€€€€€¥˜€ ……±±½İ•¤(€€€€€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰A…Ñ ½ÕÑÍ¥‘”1…å•È€ÀèíÁ…Ñ¡ôˆ¤ì((€€€€€€€€€€€¥˜€¡ÁÉ½Á•ÉÑä¹Y…±Õ”¹Y…±Õ•-¥¹€„ô)Í½¹Y…±Õ•-¥¹¹MÑÉ¥¹œ¤(€€€€€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰•¹•É…Ñ•™¥±”µÕÍĞ‰”Ñ•áĞèíÁ…Ñ¡ôˆ¤ì(€€€€€€€€€€€ÍÑÉ¥¹œ½¹Ñ•¹Ğ€ôÁÉ½Á•ÉÑä¹Y…±Õ”¹•ÑMÑÉ¥¹œ ¤€üü€ˆˆì(€€€€€€€€€€€¥˜€¡ÍÑÉ¥¹œ¹%Í9Õ±±=É]¡¥Ñ•MÁ…”¡½¹Ñ•¹Ğ¤¤(€€€€€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰•¹•É…Ñ•™¥±”¥Ì•µÁÑäèíÁ…Ñ¡ôˆ¤ì((€€€€€€€€€€€¥¹ĞÍ¥é”€ô¹½‘¥¹œ¹UQà¹•Ñ	åÑ•½Õ¹Ğ¡½¹Ñ•¹Ğ¤ì(€€€€€€€€€€€¥˜€¡Í¥é”€ø€ÔÄÈ€¨€ÄÀÈĞ¤(€€€€€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰•¹•É…Ñ•™¥±”¥ÌÑ½¼±…É”èíÁ…Ñ¡ôˆ¤ì((€€€€€€€€€€€Ñ½Ñ…±	åÑ•Ì€¬ôÍ¥é”ì(€€€€€€€€€€€™¥±•ÍmÁ…Ñ¡t€ô½¹Ñ•¹Ğì(€€€€€€€ô((€€€€€€€¥˜€¡™¥±•Ì¹½Õ¹Ğ¥Ì€ğ€Ğ½È€ø€ØĞñğÑ½Ñ…±	åÑ•Ì€ø€È€¨€ÄÀÈĞ€¨€ÄÀÈĞ¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰•¹•É…Ñ•Á…­…”•á••‘Ì‰½Õ¹‘•±¥µ¥ÑÌ¸ˆ¤ì((€€€€€€€¥˜€ …™¥±•Ì¹½¹Ñ…¥¹Í-•ä ‰M-%10¹µˆ¤ñğ(€€€€€€€€€€€€…™¥±•Ì¹-•åÌ¹¹ä¡à€ôøà¹MÑ…ÉÑÍ]¥Ñ  ‰ÍÉ¥ÁÑÌ¼ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤¤ñğ(€€€€€€€€€€€€…™¥±•Ì¹-•åÌ¹¹ä¡à€ôøà¹MÑ…ÉÑÍ]¥Ñ  ‰É•™•É•¹•Ì¼ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤¤ñğ(€€€€€€€€€€€€…™¥±•Ì¹-•åÌ¹¹ä¡à€ôøà¹MÑ…ÉÑÍ]¥Ñ  ‰…ÍÍ•ÑÌ¼ˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤¤¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰•¹•É…Ñ•Á…­…”¥Ìµ¥ÍÍ¥¹œÉ•ÅÕ¥É•1…å•È€À…ÉÑ¥™…ÑÌ¸ˆ¤ì((€€€€€€€ÍÑÉ¥¹œÍ­¥±°€ô™¥±•Íl‰M-%10¹µ‰tì(€€€€€€€¥˜€ …I••à¹%Í5…Ñ ¡Í­¥±°°€‘ ˆ ı´¥y¹…µ”éqÌ©íI••à¹Í…Á”¡Í­¥±±9…µ”¥õqÌ¨ˆ¤¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰•¹•É…Ñ•M-%10¹µ¥‘•¹Ñ¥Ñä‘¥™™•ÉÌ™É½´É•ÅÕ•ÍĞ¸ˆ¤ì(€€€€€€€¥˜€ …Í­¥±°¹½¹Ñ…¥¹Ì ‰UM=Hˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…±%¹½É•…Í”¤ñğ(€€€€€€€€€€€€…Í­¥±°¹½¹Ñ…¥¹Ì ‰<9=PUM=Hˆ°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…±%¹½É•…Í”¤¤(€€€€€€€€€€€Ñ¡É½Ü¹•Ü%¹Ù…±¥‘=Á•É…Ñ¥½¹á•ÁÑ¥½¸ ‰•¹•É…Ñ•M-%10¹µ±…­ÌÉ½ÕÑ¥¹œ±…ÕÍ•Ì¸ˆ¤ì((€€€€€€€É•ÑÕÉ¸™¥±•Ìì(€€€ô((€€€ÁÉ¥Ù…Ñ”ÍÑ…Ñ¥ŒÍÑÉ¥¹œI•ÅÕ¥É”¡ÍÑÉ¥¹mt…ÉÌ°ÍÑÉ¥¹œ­•ä¤€ôø(€€€€€€€=ÁÑ¥½¹…°¡…ÉÌ°­•ä¤€üüÑ¡É½Ü¹•ÜÉÕµ•¹Ñá•ÁÑ¥½¸ ‰5¥ÍÍ¥¹œí­•åô¸ˆ¤ì((€€€ÁÉ¥Ù…Ñ”ÍÑ…Ñ¥ŒÍÑÉ¥¹œü=ÁÑ¥½¹…°¡ÍÑÉ¥¹mt…ÉÌ°ÍÑÉ¥¹œ­•ä¤(€€€ì(€€€€€€€™½È€¡¥¹Ğ¤€ô€Àì¤€¬€Ä€ğ…ÉÌ¹1•¹Ñ ì¤¬¬¤(€€€€€€€€€€€¥˜€¡ÍÑÉ¥¹œ¹ÅÕ…±Ì¡…ÉÍm¥t°­•ä°MÑÉ¥¹½µÁ…É¥Í½¸¹=É‘¥¹…°¤¤(€€€€€€€€€€€€€€€É•ÑÕÉ¸…ÉÍm¤€¬€Åtì(€€€€€€€É•ÑÕÉ¸¹Õ±°ì(€€€ô)ô(
+            Console.Error.WriteLine(JsonSerializer.Serialize(new
+            {
+                schema = "pmcro.create-skill-invocation-receipt/v1",
+                status = "FAIL",
+                creator_execution = "NOT_VERIFIED",
+                error = ex.Message
+            }));
+            return 1;
+        }
+    }
+
+    private static void ValidateRequest(JsonElement request)
+    {
+        if (request.GetProperty("schema").GetString() != ExpectedSchema)
+            throw new InvalidOperationException("Unsupported request schema.");
+
+        JsonElement creator = request.GetProperty("creator");
+        if (creator.GetProperty("repository").GetString() != ExpectedRepository ||
+            creator.GetProperty("ref").GetString() != ExpectedRef ||
+            creator.GetProperty("plugin").GetString() != ExpectedPlugin ||
+            creator.GetProperty("skill").GetString() != ExpectedSkill)
+            throw new InvalidOperationException("Request is not pinned to the authorized creator.");
+
+        if (request.GetProperty("creator_execution").GetString() != "NOT_INVOKED" ||
+            request.GetProperty("status").GetString() != "READY_FOR_CREATOR")
+            throw new InvalidOperationException("Invalid pre-invocation state.");
+    }
+
+    private static string BuildPrompt(JsonElement request)
+    {
+        return "Invoke create-skill for this exact bounded request:\n\n" +
+            request.GetRawText() +
+            "\n\nReturn JSON only with this shape:\n" +
+            "{\"files\":{\"SKILL.md\":\"...\",\"scripts/<file>\":\"...\",\"references/<file>\":\"...\",\"assets/<file>\":\"...\"}}\n\n" +
+            "Requirements:\n" +
+            "- Include SKILL.md and at least one nonempty file in scripts/, references/, and assets/.\n" +
+            "- Every support file must be referenced from SKILL.md.\n" +
+            "- SKILL.md description must include USE FOR and DO NOT USE FOR.\n" +
+            "- Do not include files outside SKILL.md, scripts/, references/, or assets/.\n" +
+            "- Do not execute any generated script or command-like source field.\n";
+    }
+
+    private static JsonDocument ParseResult(string text)
+    {
+        string trimmed = text.Trim();
+        int start = trimmed.IndexOf('{');
+        int end = trimmed.LastIndexOf('}');
+        if (start < 0 || end <= start)
+            throw new InvalidOperationException("create-skill output did not contain JSON.");
+        return JsonDocument.Parse(trimmed[start..(end + 1)]);
+    }
+
+    private static SortedDictionary<string, string> ValidateFiles(JsonElement root, string skillName)
+    {
+        if (!root.TryGetProperty("files", out JsonElement element) ||
+            element.ValueKind != JsonValueKind.Object)
+            throw new InvalidOperationException("Output must contain a files object.");
+
+        var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        long totalBytes = 0;
+
+        foreach (JsonProperty property in element.EnumerateObject())
+        {
+            string path = property.Name;
+            if (path.Contains('\\') ||
+                path.StartsWith('/') ||
+                path.Contains("../", StringComparison.Ordinal) ||
+                path.Contains("/..", StringComparison.Ordinal) ||
+                Path.IsPathRooted(path))
+                throw new InvalidOperationException("Unsafe generated path: " + path);
+
+            bool allowed = path == "SKILL.md" ||
+                path.StartsWith("scripts/", StringComparison.Ordinal) ||
+                path.StartsWith("references/", StringComparison.Ordinal) ||
+                path.StartsWith("assets/", StringComparison.Ordinal);
+            if (!allowed)
+                throw new InvalidOperationException("Path outside Layer 0: " + path);
+
+            if (property.Value.ValueKind != JsonValueKind.String)
+                throw new InvalidOperationException("Generated file must be text: " + path);
+
+            string content = property.Value.GetString() ?? "";
+            if (string.IsNullOrWhiteSpace(content))
+                throw new InvalidOperationException("Generated file is empty: " + path);
+
+            int size = Encoding.UTF8.GetByteCount(content);
+            if (size > 512 * 1024)
+                throw new InvalidOperationException("Generated file is too large: " + path);
+
+            totalBytes += size;
+            files[path] = content;
+        }
+
+        if (files.Count is < 4 or > 64 || totalBytes > 2 * 1024 * 1024)
+            throw new InvalidOperationException("Generated package exceeds bounded limits.");
+
+        if (!files.ContainsKey("SKILL.md") ||
+            !files.Keys.Any(x => x.StartsWith("scripts/", StringComparison.Ordinal)) ||
+            !files.Keys.Any(x => x.StartsWith("references/", StringComparison.Ordinal)) ||
+            !files.Keys.Any(x => x.StartsWith("assets/", StringComparison.Ordinal)))
+            throw new InvalidOperationException("Generated package is missing required Layer 0 artifacts.");
+
+        string skill = files["SKILL.md"];
+        string namePattern = "(?m)^name:\\s*" + Regex.Escape(skillName) + "\\s*$";
+        if (!Regex.IsMatch(skill, namePattern))
+            throw new InvalidOperationException("Generated SKILL.md identity differs from request.");
+        if (!skill.Contains("USE FOR", StringComparison.OrdinalIgnoreCase) ||
+            !skill.Contains("DO NOT USE FOR", StringComparison.OrdinalIgnoreCase))
+            throw new InvalidOperationException("Generated SKILL.md lacks routing clauses.");
+
+        return files;
+    }
+
+    private static string Require(string[] args, string key)
+    {
+        return Optional(args, key) ?? throw new ArgumentException("Missing " + key + ".");
+    }
+
+    private static string? Optional(string[] args, string key)
+    {
+        for (int i = 0; i + 1 < args.Length; i++)
+            if (string.Equals(args[i], key, StringComparison.Ordinal))
+                return args[i + 1];
+        return null;
+    }
+}
