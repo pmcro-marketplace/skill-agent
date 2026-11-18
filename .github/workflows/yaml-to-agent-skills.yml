@@ -20,26 +20,34 @@ on:
       output_dir:
         required: false
         type: string
-        default: dist/yaml-to-agent-skills
+        default: dist/create-skill-requests
   workflow_dispatch:
     inputs:
       source_yaml:
-        description: YAML or JSON source inventory to convert
+        description: YAML or JSON source inventory to resolve
         required: false
         default: skills/yaml-to-agent-skills/assets/example.yaml
       output_dir:
-        description: Candidate skill output directory
+        description: create-skill request output directory
         required: false
-        default: dist/yaml-to-agent-skills
+        default: dist/create-skill-requests
 
 permissions:
   contents: read
 
 jobs:
-  convert-and-validate:
+  resolve-and-queue:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Skill Agent
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned existing Skill Creator
+        uses: actions/checkout@v4
+        with:
+          repository: shawn2024bellazan-prog/agent-skills
+          ref: 79b705c92a216356b27bae3b65a6d54187bb33ea
+          path: .creator
 
       - uses: actions/setup-python@v5
         with:
@@ -48,7 +56,19 @@ jobs:
       - name: Install YAML parser
         run: python -m pip install pyyaml
 
-      - name: Unit-test converter
+      - name: Verify pinned creator capability exists
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          plugin=json.loads(Path('.creator/plugins/skill-creator/plugin.json').read_text(encoding='utf-8'))
+          skill=Path('.creator/plugins/skill-creator/skills/create-skill/SKILL.md').read_text(encoding='utf-8')
+          assert plugin['name']=='skill-creator'
+          assert 'name: create-skill' in skill
+          print('PASS pinned creator: skill-creator/create-skill')
+          PY
+
+      - name: Unit-test YAML resolver
         run: python -m unittest tests/test_yaml_to_agent_skills.py -v
 
       - name: Select source and output
@@ -61,11 +81,11 @@ jobs:
           SOURCE="$SOURCE_INPUT"
           OUT="$OUT_INPUT"
           if [ -z "$SOURCE" ]; then SOURCE="skills/yaml-to-agent-skills/assets/example.yaml"; fi
-          if [ -z "$OUT" ]; then OUT="dist/yaml-to-agent-skills"; fi
+          if [ -z "$OUT" ]; then OUT="dist/create-skill-requests"; fi
           echo "source=$SOURCE" >> "$GITHUB_OUTPUT"
           echo "out=$OUT" >> "$GITHUB_OUTPUT"
 
-      - name: Convert declared capabilities
+      - name: Resolve reuse and queue create-skill requests
         run: |
           rm -rf "${{ steps.io.outputs.out }}"
           mkdir -p dist
@@ -75,26 +95,43 @@ jobs:
             --existing-root skills \
             --report dist/yaml-to-agent-skills-report.json
 
-      - name: Validate every generated Layer 0 skill
-        shell: bash
+      - name: Verify every gap routes to the pinned creator
         run: |
-          count=0
-          while IFS= read -r -d '' skill; do
-            count=$((count+1))
-            python skills/validate/scripts/validate_plugin.py --skill "$skill" --profile pmcro
-            python "$skill/scripts/validate.py"
-          done < <(find "${{ steps.io.outputs.out }}" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
-          if [ "$count" -eq 0 ]; then
-            echo "No new skills generated; all discovered identities were reused."
-          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('dist/yaml-to-agent-skills-report.json').read_text(encoding='utf-8'))
+          expected={
+            'repository':'shawn2024bellazan-prog/agent-skills',
+            'ref':'79b705c92a216356b27bae3b65a6d54187bb33ea',
+            'plugin':'skill-creator',
+            'skill':'create-skill',
+          }
+          assert report['creator']==expected
+          assert report['creator_execution']=='NOT_INVOKED'
+          for item in report['create_requests']:
+              req=json.loads(Path(item['request']).read_text(encoding='utf-8'))
+              assert req['creator']==expected
+              assert req['creator_execution']=='NOT_INVOKED'
+              assert req['status']=='READY_FOR_CREATOR'
+          print('PASS all gaps route to pinned create-skill; creator NOT_INVOKED')
+          PY
 
-      - name: Show conversion report
+      - name: Show resolution report
         run: cat dist/yaml-to-agent-skills-report.json
 
-      - name: Upload candidate skills
+      - name: Upload creator queue
         uses: actions/upload-artifact@v4
         with:
-          name: yaml-to-agent-skills
+          name: yaml-to-create-skill-requests
           path: |
             ${{ steps.io.outputs.out }}
             dist/yaml-to-agent-skills-report.json
+
+      - name: Record execution boundary
+        run: |
+          echo '## YAML to Agent Skills' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Existing skills are reused first.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Missing capabilities are queued for skill-creator/create-skill.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Skill Creator is pinned and verified, but NOT_INVOKED in this cloud proof.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- A governed self-hosted Aspire/Ollama job must perform creator execution and later validation.' >> "$GITHUB_STEP_SUMMARY"
