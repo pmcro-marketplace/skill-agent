@@ -1,0 +1,17 @@
+resources:
+  ollama-server:
+    kind: container
+    description: Persistent local Ollama inference service
+    image: "docker.io/ollama/ollama:0.34.4"
+  model-orchestrator:
+    kind: model
+    description: Local orchestration model
+    model: "qwen3:8b"
+  playwright-mcp:
+    kind: mcp
+    description: Playwright MCP browser capability
+    command: "npx -y @playwright/mcp@0.0.85 --headless --browser chrome --host 127.0.0.1 --port 8931"
+  orchestrator-api:
+    kind: project
+    description: PMCR-O orchestrator API
+    project: "ProjectName.OrchestratorApi.csproj"
